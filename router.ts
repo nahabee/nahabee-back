@@ -1,10 +1,26 @@
+import { Express } from 'express';
 import usersController from './controllers/users';
 import projectsController from './controllers/projects';
-import { Express } from 'express';
+
 
 const setupRoutes = (server: Express) => {
 
+    
   // USERS //
+  // get users
+
+  server.get('/api/users', usersController.getAllUsers);
+
+  // get one users
+
+  server.get('/api/users/:idUser', usersController.getOneUser);
+
+
+ //put user 
+
+ server.put('/api/users/:idUser',  usersController.updateUser);
+
+
   // post users, checking if user exists and updates it
   server.post(
     '/api/users',
