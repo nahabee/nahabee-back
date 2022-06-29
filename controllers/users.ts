@@ -13,8 +13,8 @@ const getAllUsers = (async (
     next: NextFunction
   ) => {
     try {
-      const sortBy: string = req.query.sort as string;
-      const users = await User.getAllUsers(sortBy);
+     
+      const users = await User.getAllUsers();
   
       res.setHeader(
         'Content-Range',
@@ -40,7 +40,7 @@ const getAllUsers = (async (
 
   // put user into
   // updates a user
-const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+const updateUser = ( async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { idUser } = req.params;
       const userUpdated = await User.updateUser(
@@ -56,7 +56,8 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     } catch (err) {
       next(err);
     }
-  };
+  }) as RequestHandler;
+  
 
 // Sends an error if the email is already registered in the database
 const emailIsFree = (async (

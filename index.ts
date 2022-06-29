@@ -6,7 +6,7 @@ import 'dotenv/config';
 import cors from 'cors';
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3000;
 
 // CORS : J'autorise localhost:3001 et localhost:3000
 // à faire des requetes axios
