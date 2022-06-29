@@ -5,8 +5,8 @@ import { NextFunction, Request, Response } from 'express';
 import { ErrorHandler } from '../helpers/errors';
 
 
-const getAllUsers = async (sortBy = ''): Promise<IUser[]> => {
-    let sql = `SELECT id, firstname, lastname, email, isIntern FROM users`;
+const getAllUsers = async (): Promise<IUser[]> => {
+    const sql = `SELECT id, firstname, lastname, email, isIntern FROM users`;
     const results = await connection.promise().query<IUser[]>(sql);
     return results[0];
   };

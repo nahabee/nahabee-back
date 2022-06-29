@@ -14,7 +14,7 @@ const getAllUsers = (async (
   ) => {
     try {
       const sortBy: string = req.query.sort as string;
-      const users = await User.getAllUsers(sortBy);
+      const users = await User.getAllUsers();
   
       res.setHeader(
         'Content-Range',
