@@ -52,8 +52,8 @@ const getAllUsers = async (sortBy = ''): Promise<IUser[]> => {
       oneValue = true;
     }
     if (user.isIntern) {
-      sql += oneValue ? ', inIntern = ? ' : ' isIntern = ? ';
-      sqlValues.push(user.admin);
+      sql += oneValue ? ', isIntern = ? ' : ' isIntern = ? ';
+      sqlValues.push(user.isIntern);
       oneValue = true;
     }
     sql += ' WHERE id = ?';

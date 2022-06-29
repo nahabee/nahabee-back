@@ -41,7 +41,7 @@ const getAllUsers = (async (
 
   // put user into
   // updates a user
-const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+const updateUser = ( async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { idUser } = req.params;
       const userUpdated = await User.updateUser(
@@ -57,7 +57,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     } catch (err) {
       next(err);
     }
-  };
+  }) as RequestHandler;
   
 
 
