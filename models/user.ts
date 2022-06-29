@@ -1,14 +1,12 @@
 import connection from '../db-config';
 import { ResultSetHeader } from 'mysql2';
 import IUser from '../interfaces/IUser';
-
+import { NextFunction, Request, Response } from 'express';
+import { ErrorHandler } from '../helpers/errors';
 
 
 const getAllUsers = async (sortBy = ''): Promise<IUser[]> => {
     let sql = `SELECT id, firstname, lastname, email, isIntern FROM users`;
-    if (sortBy) {
-      sql += ` ORDER BY ${sortBy}`;
-    }
     const results = await connection.promise().query<IUser[]>(sql);
     return results[0];
   };
@@ -65,8 +63,60 @@ const getAllUsers = async (sortBy = ''): Promise<IUser[]> => {
     return results[0].affectedRows === 1;
   };
 
+const getUserByEmail = async (email: string): Promise<IUser> => {
+  const [results] = await connection
+    .promise()
+    .query<IUser[]>(
+      'SELECT id, firstname, lastname, email, password, isIntern FROM users WHERE email = ?',
+      [email]
+    );
+  return results[0];
+};
 
 
-  export {
-    getAllUsers,getUserById,updateUser
-  };
+
+const emailIsFree = async (req: Request, res: Response, next: NextFunction) => {
+  // Récupèrer l'email dans le req.body
+  const user = req.body as IUser;
+  // Vérifier si l'email appartient déjà à un user
+  const userExists: IUser = await getUserByEmail(user.email);
+  // Si oui => erreur
+  if (userExists) {
+    next(new ErrorHandler(409, `This user already exists`));
+  } else {
+    // Si non => next
+    next();
+  }
+};
+
+const addUser = async (user: IUser): Promise<number> => {
+  const results = await connection
+    .promise()
+    .query<ResultSetHeader>(
+      'INSERT INTO users (firstname, lastname, email, password, isIntern) VALUES (?, ?, ?, ?, ?)',
+      [user.firstname, user.lastname, user.email, user.password, user.isIntern]
+    );
+  return results[0].insertId;
+};
+
+
+
+const deleteUser = async (idUser: number): Promise<boolean> => {
+  const results = await connection
+    .promise()
+    .query<ResultSetHeader>('DELETE FROM users WHERE id = ?', [idUser]);
+  return results[0].affectedRows === 1;
+};
+
+export {
+  getUserByEmail,
+  deleteUser,
+  
+  emailIsFree,
+  
+  addUser,
+  getAllUsers,
+  getUserById,
+  updateUser
+};
+
