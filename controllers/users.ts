@@ -13,7 +13,7 @@ const getAllUsers = (async (
     next: NextFunction
   ) => {
     try {
-      const sortBy: string = req.query.sort as string;
+     
       const users = await User.getAllUsers();
   
       res.setHeader(
