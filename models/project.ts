@@ -14,8 +14,8 @@ const getAllProjects = async (): Promise<IProject[]> => {
 const addProject = async(project: IProject) : Promise<number> => {
     const results = await connection
     .promise()
-    .query<ResultSetHeader>('INSERT INTO projects (nameProject, image, projectDesc, client) VALUES (?,?,?,?)',
-    [project.nameProject, project.image, project.projectDesc, project.client]);
+    .query<ResultSetHeader>('INSERT INTO projects (nameProject, image, projectDesc, client, subsidiary,startDate, finalDate, progress, industryTag, color, projectManager) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+    [project.nameProject, project.image, project.projectDesc, project.client, project.subsidiary,project.startDate, project.finalDate, project.progress, project.industryTag, project.color, project.projectManager]);
     return results[0].insertId;
 };
 

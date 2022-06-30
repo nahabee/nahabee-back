@@ -5,4 +5,11 @@ export default interface IProject extends RowDataPacket {
     image: string;
     projectDesc: string;
     client: string;
+    subsidiary: string;
+    startDate: string;
+    finalDate: string;
+    progress: number;
+    industryTag: string;
+    color: string;
+    projectManager: string;
 }
