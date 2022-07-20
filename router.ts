@@ -1,11 +1,8 @@
 import { Express } from 'express';
 import brandsController from './controllers/brands';
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { ErrorHandler } from './helpers/errors';
 
 const setupRoutes = (server: Express) => {
   // >> --- GET ALL Brands ---
-
   server.get('/api/brands', brandsController.getAllBrands);
 
   // ? GET a brand by id
