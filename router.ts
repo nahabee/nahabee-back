@@ -1,47 +1,37 @@
 import { Express } from 'express';
-import usersController from './controllers/users';
-import projectsController from './controllers/projects';
-
+import brandsController from './controllers/brands';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { ErrorHandler } from './helpers/errors';
 
 const setupRoutes = (server: Express) => {
+  // >> --- GET ALL Brands ---
 
-    
-  // USERS //
-  // get users
+  server.get('/api/brands', brandsController.getAllBrands);
 
-  server.get('/api/users', usersController.getAllUsers);
+  // ? GET a brand by id
+  server.get('/api/brands/:idBrand', brandsController.getOneBrand);
 
-  // get one users
-
-  server.get('/api/users/:idUser', usersController.getOneUser);
-
-
- //put user 
-
- server.put('/api/users/:idUser',  usersController.updateUser);
-
-
-  // post users, checking if user exists and updates it
+  // ? POST a new brand
   server.post(
-    '/api/users',
-    usersController.emailIsFree,
-    usersController.addUser
+    '/api/brands',
+    brandsController.validateBrand,
+    brandsController.addBrand
   );
-  // delete user by id
-  server.delete(
-    '/api/users/:idUser',
-    usersController.userExists,
-    usersController.deleteUser
-  );
-  
-  // PROJECTS //
-  //GET all projects
-  server.get('/api/projects', projectsController.getAllProjects);
-  //POST project
-  server.post('/api/projects', projectsController.addProject);
-  //DELETE project
-  server.delete('/api/projects/:idProject', projectsController.deleteProject);
 
+  // ? MODIFY brand
+  server.put(
+    '/api/brands/:idBrand',
+    brandsController.validateBrand,
+    brandsController.brandExists,
+    brandsController.updateBrand
+  );
+
+  // ? DELETE a brand
+  server.delete(
+    '/api/brands/:idBrand',
+    brandsController.brandExists,
+    brandsController.deleteBrand
+  );
 };
 
 export default setupRoutes;
