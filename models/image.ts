@@ -9,6 +9,15 @@ const getAllImages = async (): Promise<IImage[]> => {
     .query<IImage[]>(`SELECT * FROM images`);
   return results[0];
 };
+// Get Image FROM A SPECIFIC PAGE
+
+const getImagesByPage = async (idPage: number): Promise<IImage[]> => {
+  const results = await connection
+    .promise()
+    .query<IImage[]>('SELECT * FROM images WHERE idPage = ?', [idPage]);
+
+  return results[0];
+};
 
 // GET images by ID
 const getImageById = async (idImage: number): Promise<IImage> => {
@@ -76,4 +85,5 @@ export default {
   deleteImage,
   getImageById,
   updateImage,
+  getImagesByPage,
 };
