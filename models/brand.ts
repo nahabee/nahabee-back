@@ -1,6 +1,6 @@
-import { ResultSetHeader } from 'mysql2';
-import connection from '../db-config';
-import IBrand from '../interfaces/IBrand';
+import { ResultSetHeader } from "mysql2";
+import connection from "../db-config";
+import IBrand from "../interfaces/IBrand";
 
 // GET all brands
 const getAllBrands = async (): Promise<IBrand[]> => {
@@ -14,14 +14,14 @@ const getAllBrands = async (): Promise<IBrand[]> => {
 const getBrandById = async (idBrand: number): Promise<IBrand> => {
   const [results] = await connection
     .promise()
-    .query<IBrand[]>('SELECT * FROM brands WHERE id = ?', [idBrand]);
+    .query<IBrand[]>("SELECT * FROM brands WHERE id = ?", [idBrand]);
   return results[0];
 };
 
 // POST brands
 const addBrand = async (brand: IBrand): Promise<number> => {
   const results = await connection.promise().query<ResultSetHeader>(
-    'INSERT INTO brands (name) VALUES (?)',
+    "INSERT INTO brands (name) VALUES (?)",
 
     brand.name
   );
@@ -33,21 +33,21 @@ const updateBrand = async (
   idBrand: number,
   brand: IBrand
 ): Promise<boolean> => {
-  let sql = 'UPDATE brands SET ';
+  let sql = "UPDATE brands SET ";
   const sqlValues: Array<string | number | boolean> = [];
   let oneValue = false;
 
   if (brand.idPage) {
-    sql += oneValue ? ', idPage = ? ' : ' idPage = ? ';
+    sql += oneValue ? ", idPage = ? " : " idPage = ? ";
     sqlValues.push(brand.idPage);
     oneValue = true;
   }
   if (brand.name) {
-    sql += oneValue ? ', name = ? ' : ' name = ? ';
+    sql += oneValue ? ", name = ? " : " name = ? ";
     sqlValues.push(brand.name);
     oneValue = true;
   }
-  sql += ' WHERE id = ?';
+  sql += " WHERE id = ?";
   sqlValues.push(idBrand);
 
   const results = await connection
@@ -60,7 +60,7 @@ const updateBrand = async (
 const deleteBrand = async (idBrand: number): Promise<boolean> => {
   const results = await connection
     .promise()
-    .query<ResultSetHeader>('DELETE FROM brands WHERE id = ?', [idBrand]);
+    .query<ResultSetHeader>("DELETE FROM brands WHERE id = ?", [idBrand]);
   return results[0].affectedRows === 1;
 };
 
