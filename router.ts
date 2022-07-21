@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import brandsController from './controllers/brands';
 import imagesController from './controllers/images';
+import formsController from './controllers/forms';
 import pagesController from './controllers/pages';
 
 const setupRoutes = (server: Express) => {
@@ -89,6 +90,23 @@ const setupRoutes = (server: Express) => {
     '/api/pages/:idPage',
     pagesController.pageExists,
     pagesController.deletePage
+  );
+
+  // ? GET ALL Forms
+  server.get('/api/form', formsController.getAllForms);
+
+  // ? POST a new form
+  server.post(
+    '/api/form',
+    formsController.validateForm,
+    formsController.addForm
+  );
+
+  // ? DELETE a form
+  server.delete(
+    '/api/form/:idForm',
+    formsController.formExists,
+    formsController.deleteForm
   );
 };
 

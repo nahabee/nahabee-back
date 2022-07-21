@@ -109,8 +109,8 @@ const deleteBrand = (async (
 ) => {
   try {
     const { idBrand } = req.params;
-    const brandtDeleted = await Brand.deleteBrand(Number(idBrand)); // boolean
-    if (brandtDeleted) {
+    const brandDeleted = await Brand.deleteBrand(Number(idBrand)); // boolean
+    if (brandDeleted) {
       res.sendStatus(204);
     } else {
       throw new ErrorHandler(500, 'Brand cannot be deleted');
