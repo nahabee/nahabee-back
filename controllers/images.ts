@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
+import connection from '../db-config';
 import { ErrorHandler } from '../helpers/errors';
 import Image from '../models/image';
 import IImage from '../interfaces/IImage';
@@ -33,6 +34,21 @@ const getAllImages = (async (
   try {
     const images = await Image.getAllImages();
     return res.status(200).json(images);
+  } catch (err) {
+    next(err);
+  }
+}) as RequestHandler;
+
+// GET IMAGES : by PAGE
+const getImagesByPage = (async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { idPage } = req.params;
+    const images = await Image.getImagesByPage(Number(idPage));
+    res.status(200).json(images);
   } catch (err) {
     next(err);
   }
@@ -130,4 +146,5 @@ export default {
   getOneImage,
   updateImage,
   validateImage,
+  getImagesByPage,
 };
