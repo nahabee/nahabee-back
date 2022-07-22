@@ -4,7 +4,7 @@ import Brand from '../models/brand';
 import IBrand from '../interfaces/IBrand';
 import Joi from 'joi';
 
-// validate new brand for POST
+// validate new brand for POST //
 const validateBrand = (req: Request, res: Response, next: NextFunction) => {
   let required: Joi.PresenceMode = 'optional';
   if (req.method === 'POST') {
