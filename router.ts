@@ -3,6 +3,7 @@ import brandsController from './controllers/brands';
 import imagesController from './controllers/images';
 import formsController from './controllers/forms';
 import pagesController from './controllers/pages';
+import mesuresController from './controllers/mesures';
 
 const setupRoutes = (server: Express) => {
   // >> --- GET ALL Brands ---
@@ -107,6 +108,34 @@ const setupRoutes = (server: Express) => {
     '/api/form/:idForm',
     formsController.formExists,
     formsController.deleteForm
+  );
+
+  // >> --- GET ALL Mesures ---
+  server.get('/api/mesures', mesuresController.getAllMesures);
+
+  // ? GET a mesure by id
+  server.get('/api/mesures/:idMesure', mesuresController.getOneMesure);
+
+  // ? POST a new mesure
+  server.post(
+    '/api/mesures',
+    mesuresController.validateMesure,
+    mesuresController.addMesure
+  );
+
+  // ? MODIFY mesure
+  server.put(
+    '/api/mesures/:idMesure',
+    mesuresController.validateMesure,
+    mesuresController.mesureExists,
+    mesuresController.updateMesure
+  );
+
+  // ? DELETE a mesure
+  server.delete(
+    '/api/mesures/:idMesure',
+    mesuresController.mesureExists,
+    mesuresController.deleteMesure
   );
 };
 
