@@ -1,5 +1,4 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import connection from '../db-config';
 import { ErrorHandler } from '../helpers/errors';
 import Image from '../models/image';
 import IImage from '../interfaces/IImage';

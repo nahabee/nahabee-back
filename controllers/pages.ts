@@ -2,7 +2,6 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ErrorHandler } from '../helpers/errors';
 import Page from '../models/page';
 import IPage from '../interfaces/IPage';
-import Image from '../models/image';
 import Joi from 'joi';
 
 // validate new page for POST
