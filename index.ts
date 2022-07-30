@@ -43,3 +43,4 @@ app.use(handleError);
 app.listen(port, () => {
   console.log(`server is listening on ${port}`);
 });
+module.exports = app;
