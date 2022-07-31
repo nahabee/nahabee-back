@@ -30,6 +30,10 @@ const getAllBrands = (async (
 ) => {
   try {
     const brands = await Brand.getAllBrands();
+    res.setHeader(
+      'Content-Range',
+      `brands : 0-${brands.length}/${brands.length + 1}`
+    );
     return res.status(200).json(brands);
   } catch (err) {
     next(err);

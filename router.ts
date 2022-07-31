@@ -5,6 +5,7 @@ import formsController from './controllers/forms';
 import pagesController from './controllers/pages';
 import usersController from './controllers/users';
 import mesuresController from './controllers/mesures';
+import authController from './controllers/auth';
 
 const setupRoutes = (server: Express) => {
   // >> --- GET ALL Brands ---
@@ -139,8 +140,39 @@ const setupRoutes = (server: Express) => {
     mesuresController.deleteMesure
   );
 
-  // GET ALL users ---
+  // USERS
+  // get users
   server.get('/api/users', usersController.getAllUsers);
+  // post users, checking if email is free then adding user
+  server.post(
+    '/api/users',
+    // valide les données fournies dans la requete
+    usersController.validateUser,
+    // je vérifie que l'email est disponible
+    // aucun utilisateur n'est déjà enregistré
+    usersController.emailIsFree,
+    usersController.addUser
+  );
+  // put users, checking if user exists and updates it
+  server.put(
+    '/api/users/:idUser',
+    authController.getCurrentSession,
+    authController.checkSessionPrivileges,
+    usersController.validateUser,
+    usersController.userExists,
+    usersController.updateUser
+  );
+  // delete user by id
+  server.delete(
+    '/api/users/:idUser',
+    authController.getCurrentSession,
+    authController.checkSessionPrivileges,
+    usersController.userExists,
+    usersController.deleteUser
+  );
+
+  // LOGIN
+  server.post('/api/login', authController.validateLogin, authController.login);
 };
 
 export default setupRoutes;

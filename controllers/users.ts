@@ -2,7 +2,6 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import * as User from '../models/user';
 import IUser from '../interfaces/IUser';
 import { ErrorHandler } from '../helpers/errors';
-import { formatSortString } from '../helpers/functions';
 import Joi from 'joi';
 
 ///////////// USERS ///////////////
@@ -13,15 +12,40 @@ const validateUser = (req: Request, res: Response, next: NextFunction) => {
     required = 'required';
   }
   const errors = Joi.object({
-    name: Joi.string().max(100).presence(required),
+    firstname: Joi.string().max(100).optional(),
+    lastname: Joi.string().max(100).optional(),
     email: Joi.string().email().max(255).presence(required),
     password: Joi.string().min(8).max(15).presence(required),
-    id: Joi.number().optional(), // for react-admin
+    admin: Joi.number().min(0).max(1).optional(),
+    id: Joi.number().optional(), // pour react-admin
   }).validate(req.body, { abortEarly: false }).error;
   if (errors) {
     next(new ErrorHandler(422, errors.message));
   } else {
     next();
+  }
+};
+
+// Sends an error if the email is already registered in the database
+const emailIsFree = async (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  try {
+    // get email from req.body
+    const { email } = req.body as IUser;
+    // Checks if email already belongs to a registered user
+    const userExists = await User.getUserByEmail(email);
+    // If email isn't free = Send an error
+    if (userExists) {
+      next(new ErrorHandler(400, `This user already exists`));
+    } else {
+      // if email is free, next
+      next();
+    }
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -32,13 +56,15 @@ const getAllUsers = (async (
   next: NextFunction
 ) => {
   try {
-    const sortBy: string = req.query.sort as string;
-    const users = await User.getAllUsers(formatSortString(sortBy));
+    // appelle le modèle pour récupérer tous les users
+    const users = await User.getAllUsers();
 
+    // react-admin
     res.setHeader(
       'Content-Range',
       `users : 0-${users.length}/${users.length + 1}`
     );
+    // renvoie à l'utilisateur la liste de tous les users
     return res.status(200).json(users);
   } catch (err) {
     next(err);
@@ -69,6 +95,7 @@ const userExists = (async (req: Request, res: Response, next: NextFunction) => {
     }
     // Si oui => next
     else {
+      req.record = userExists; // because we need deleted record to be sent after a delete in react-admin
       next();
     }
   } catch (err) {
@@ -128,6 +155,7 @@ export default {
   getAllUsers,
   getOneUser,
   userExists,
+  emailIsFree,
   deleteUser,
   validateUser,
   addUser,

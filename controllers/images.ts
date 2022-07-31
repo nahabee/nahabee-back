@@ -32,6 +32,10 @@ const getAllImages = (async (
 ) => {
   try {
     const images = await Image.getAllImages();
+    res.setHeader(
+      'Content-Range',
+      `images : 0-${images.length}/${images.length + 1}`
+    );
     return res.status(200).json(images);
   } catch (err) {
     next(err);

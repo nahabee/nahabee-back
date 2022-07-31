@@ -31,6 +31,10 @@ const getAllMesures = (async (
 ) => {
   try {
     const mesures = await Mesure.getAllMesures();
+    res.setHeader(
+      'Content-Range',
+      `mesures : 0-${mesures.length}/${mesures.length + 1}`
+    );
     return res.status(200).json(mesures);
   } catch (err) {
     next(err);

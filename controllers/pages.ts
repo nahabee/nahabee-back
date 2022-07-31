@@ -30,6 +30,10 @@ const getAllPages = (async (
 ) => {
   try {
     const pages = await Page.getAllPages();
+    res.setHeader(
+      'Content-Range',
+      `pages : 0-${pages.length}/${pages.length + 1}`
+    );
     return res.status(200).json(pages);
   } catch (err) {
     next(err);

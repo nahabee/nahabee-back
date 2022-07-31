@@ -43,6 +43,10 @@ const getAllForms = (async (
 ) => {
   try {
     const forms = await Form.getAllForms();
+    res.setHeader(
+      'Content-Range',
+      `forms : 0-${forms.length}/${forms.length + 1}`
+    );
     return res.status(200).json(forms);
   } catch (err) {
     next(err);
