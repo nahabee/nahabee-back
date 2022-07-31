@@ -18,7 +18,6 @@ const corsOptions: cors.CorsOptions = {
     'http://localhost:3000',
     'https://nahabee-ppkd2yadz-nahabee.vercel.app',
     'https://www.nahabee.com',
-    'https://www.nahabee.com',
   ],
   credentials: true,
 };
