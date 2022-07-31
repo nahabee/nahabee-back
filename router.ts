@@ -3,6 +3,7 @@ import brandsController from './controllers/brands';
 import imagesController from './controllers/images';
 import formsController from './controllers/forms';
 import pagesController from './controllers/pages';
+import usersController from './controllers/users';
 import mesuresController from './controllers/mesures';
 
 const setupRoutes = (server: Express) => {
@@ -137,6 +138,9 @@ const setupRoutes = (server: Express) => {
     mesuresController.mesureExists,
     mesuresController.deleteMesure
   );
+
+  // GET ALL users ---
+  server.get('/api/users', usersController.getAllUsers);
 };
 
 export default setupRoutes;
