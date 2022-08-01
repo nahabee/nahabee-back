@@ -4,4 +4,5 @@ export default interface IImage extends RowDataPacket {
   name: string;
   idPage: number;
   brand: string;
+  type: number;
 }

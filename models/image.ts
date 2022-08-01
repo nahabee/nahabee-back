@@ -32,8 +32,8 @@ const addImage = async (image: IImage): Promise<number> => {
   const results = await connection
     .promise()
     .query<ResultSetHeader>(
-      'INSERT INTO images (name, idPage, brand) VALUES (? , ?, ?)',
-      [image.name, image.idPage, image.brand]
+      'INSERT INTO images (name, idPage, brand, type) VALUES (? , ?, ?, ?)',
+      [image.name, image.idPage, image.brand, image.type]
     );
   return results[0].insertId;
 };
@@ -60,6 +60,11 @@ const updateImage = async (
   if (image.brand) {
     sql += oneValue ? ', brand = ? ' : ' brand = ? ';
     sqlValues.push(image.brand);
+    oneValue = true;
+  }
+  if (image.type) {
+    sql += oneValue ? ', type = ? ' : ' type = ? ';
+    sqlValues.push(image.type);
     oneValue = true;
   }
   sql += ' WHERE id = ?';
