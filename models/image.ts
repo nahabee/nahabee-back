@@ -32,7 +32,7 @@ const addImage = async (image: IImage): Promise<number> => {
   const results = await connection
     .promise()
     .query<ResultSetHeader>(
-      'INSERT INTO images (name, idPage) VALUES (? , ?, ?)',
+      'INSERT INTO images (name, idPage, brand) VALUES (? , ?, ?)',
       [image.name, image.idPage, image.brand]
     );
   return results[0].insertId;
